@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>F:\Games\NetCore\Rudy\Profescipta_test\bin\Release\net7.0\publish\</_PublishTargetUrl>
-    <History>True|2025-03-12T14:45:27.7654590Z;</History>
+    <History>True|2025-03-12T15:27:31.9476323Z;True|2025-03-12T21:45:27.7654590+07:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

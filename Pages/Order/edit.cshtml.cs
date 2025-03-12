@@ -22,6 +22,37 @@ namespace Profescipta_test.Pages.Order
             GrandTotal = listTest.Sum(item => item.tempTotal);
         }
 
+        public IActionResult OnPostDelete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                errorMessage = "Invalid item ID.";
+                return Page();
+            }
+
+            try
+            {
+                string connectionString = "Data Source=ALDI;Initial Catalog=profescipta_test;Integrated Security=True";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sql = "DELETE FROM SO_ITEM WHERE SO_ITEM_ID=@SO_ITEM_ID";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@SO_ITEM_ID", id);
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                successMessage = "Item deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+            }
+
+            return RedirectToPage();
+        }
 
         public void OnGet()
         {
