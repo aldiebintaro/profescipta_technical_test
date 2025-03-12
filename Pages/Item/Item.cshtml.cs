@@ -33,36 +33,43 @@ namespace Profescipta_test.Pages.Item
             CalculateTotals();
         }
 
-    
 
         public IActionResult OnPostAdd(FormData formData)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-             
-                var sessionData = HttpContext.Session.GetString("listTest");
-                listTest = string.IsNullOrEmpty(sessionData) ? new List<FormData>()
-                                                             : JsonConvert.DeserializeObject<List<FormData>>(sessionData);
+                if (ModelState.IsValid)
+                {
 
-              
-                formData.Id = listTest.Count + 1;
-
-                decimal quantity = decimal.TryParse(formData.tempQuantity, out var q) ? q : 0;
-                decimal price = decimal.TryParse(formData.tempPrice, out var p) ? p : 0;
-
-                formData.tempTotal = quantity * price;
-
-                listTest.Add(formData);
+                    var sessionData = HttpContext.Session.GetString("listTest");
+                    listTest = string.IsNullOrEmpty(sessionData) ? new List<FormData>()
+                                                                 : JsonConvert.DeserializeObject<List<FormData>>(sessionData);
 
 
-                HttpContext.Session.SetString("listTest", JsonConvert.SerializeObject(listTest));
-                CalculateTotals();
+                    formData.Id = listTest.Count + 1;
+
+                    decimal quantity = decimal.TryParse(formData.tempQuantity, out var q) ? q : 0;
+                    decimal price = decimal.TryParse(formData.tempPrice, out var p) ? p : 0;
+
+                    formData.tempTotal = quantity * price;
+
+                    listTest.Add(formData);
+
+
+                    HttpContext.Session.SetString("listTest", JsonConvert.SerializeObject(listTest));
+                    CalculateTotals();
+                }
+
+                return RedirectToPage();
             }
-
-            return RedirectToPage();
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return Page();
+            }
         }
-
-        public IActionResult OnPostSaveToDatabase()
+            public IActionResult OnPostSaveToDatabase()
         {
            
             orderInfo.ORDER_NO = Request.Form["salesOrder"];
@@ -70,8 +77,13 @@ namespace Profescipta_test.Pages.Item
             orderInfo.COM_CUSTOMER_ID = Request.Form["Customer"];
             orderInfo.ADDRESS = Request.Form["Address"];
 
+            orderInfo.ORDER_NO = "2";
+            orderInfo.ORDER_DATE = "12-12-2012";
+            orderInfo.COM_CUSTOMER_ID = "01";
+            orderInfo.ADDRESS = "Test";
 
-         
+
+
             if (string.IsNullOrEmpty(orderInfo.ORDER_NO) || string.IsNullOrEmpty(orderInfo.ORDER_DATE) ||
         string.IsNullOrEmpty(orderInfo.COM_CUSTOMER_ID) || string.IsNullOrEmpty(orderInfo.ADDRESS))
             {
@@ -113,7 +125,6 @@ namespace Profescipta_test.Pages.Item
                         newOrderId = Convert.ToInt64(orderCommand.ExecuteScalar());
                     }
 
-                    // Insert order items into database.
                     foreach (var item in listTest)
                     {
                         string insertItemQuery = @"

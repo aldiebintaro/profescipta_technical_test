@@ -90,13 +90,14 @@
         <tbody>
             <tr>
                 <td>New</td>
+                <td>
+                    <button type="submit" asp-page-handler="Add" class="btn btn-primary">Add</button>
+                </td>
                 <td><input type="text" name="formData.tempName" class="form-control" /></td>
                 <td><input type="number" name="formData.tempQuantity" class="form-control" min="1" step="1" oninput="updateTotal()" id="newQuantity" /></td>
                 <td><input type="number" name="formData.tempPrice" class="form-control" min="0" step="0.01" oninput="updateTotal()" id="newPrice" /></td>
                 <td><input type="number" name="formData.tempTotal" id="newTotal" class="form-control" readonly /></td>
-                <td>
-                    <button type="submit" asp-page-handler="Add" class="btn btn-primary">Add</button>
-                </td>
+ 
             </tr>
 
             <tr>

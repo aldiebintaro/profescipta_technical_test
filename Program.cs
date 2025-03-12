@@ -1,15 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Razor Pages
 builder.Services.AddRazorPages();
 
 // Add Session Services
-builder.Services.AddDistributedMemoryCache(); // Required for session storage
+builder.Services.AddDistributedMemoryCache(); 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
-    options.Cookie.HttpOnly = true; // Protect against client-side scripts
-    options.Cookie.IsEssential = true; // Ensure session works even if tracking is disabled
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true; 
+    options.Cookie.IsEssential = true; 
 });
 
 var app = builder.Build();
