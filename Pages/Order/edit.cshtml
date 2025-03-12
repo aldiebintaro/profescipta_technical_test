@@ -1,0 +1,145 @@
+﻿@page
+@model Profescipta_test.Pages.Order.editModel
+@{
+}
+
+<br>
+<h2>Edit Form</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+@if (Model.successMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.successMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+    <input type="hidden" name="SO_ORDER_ID" value="@Model.orderInfo.SO_ORDER_ID">
+    <div class="row mb-3">
+      
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Sales Order Number</label>
+                <input type="text" class="form-control" name="salesOrder" placeholder="Input here" value="@Model.orderInfo.ORDER_NO"/>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Order Date</label>
+                <input type="date" id="orderDate" name="orderDate" class="form-control" placeholder="Pick date" value="@Model.orderInfo.ORDER_DATE" />
+            </div>
+        </div>
+
+ 
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Customer</label>
+                <select class="form-control" name="Customer" placeholder="Input here">
+                    <option value="">-- Select Customer --</option>
+                    <option value="1">PROFES</option>
+                    <option value="2">TITAN</option>
+                    <option value="3">DIPS</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Address</label>
+                <textarea class="form-control" name="Address" rows="4" placeholder="Input here" value="@Model.orderInfo.ADDRESS"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Action</th>
+                <th>ITEM NAME</th>
+                <th>QTY</th>
+                <th>PRICE</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.listItem)
+            {
+            <tr>
+                    <td>@item.SO_ORDER_ID</td>
+                <td>
+                    <button type="button" class="btn btn-success btn-sm" onclick="addItem()">Save</button>
+                </td>
+                <td>@item.ITEM_NAME</td>
+                <td>@item.QUANTITY</td>
+                <td>@item.PRICE</td>
+                <td>@item.TOTAL</td>
+            </tr>
+
+            }
+            <tr>
+                <td colspan="3"><strong>Total</strong></td>
+                <td class="text-end"><strong>Quantity = @Model.TotalQuantity</strong></td>
+                <td class="text-end"><strong>Price = @Model.GrandTotal.ToString("0.00")</strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mb-3 justify-content-center">
+       
+        <div class="col-auto d-grid">
+            <button type="submit"  class="btn btn-danger mt-3">Save Order</button>
+        </div>
+
+      
+        <div class="col-auto d-grid">
+            <a class="btn btn-primary mt-3" href="/Order/Index">Cancel</a>
+        </div>
+    </div>
+     
+
+    </form>
+
+                <style>
+
+    body {
+        background-color: #cce5ff;
+    }
+
+    .table {
+        background-color: white;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table thead th {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+    .text-end {
+        text-align: right;
+        font-weight: bold;
+    }
+
+                </style>

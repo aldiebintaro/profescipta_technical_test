@@ -1,0 +1,166 @@
+﻿@page
+@model Profescipta_test.Pages.Item.ItemModel
+@{
+}
+<br>
+<h2>Edit Form</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+@if (Model.successMessage.Length > 0)
+{
+    <div class='alert alert-success alert-dismissible fade show' role="alert">
+        <strong>@Model.successMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Sales Order Number</label>
+                <input type="text" class="form-control" name="salesOrder" placeholder="Input here" value="@Model.orderInfo.ORDER_NO" />
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Order Date</label>
+                <input type="date" name="orderDate" class="form-control" value="@Model.orderInfo.ORDER_DATE" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Customer</label>
+                <select class="form-control" name="Customer">
+                    <option value="">-- Select Customer --</option>
+                    <option value="1">PROFES</option>
+                    <option value="2">TITAN</option>
+                    <option value="3">DIPS</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Address</label>
+                <textarea class="form-control" name="Address" rows="4" placeholder="Input here">@Model.orderInfo.ADDRESS</textarea>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Actions</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.listTest)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="itemId" value="@item.Id" />
+                        </form>
+                    </td>
+                    <td>
+                        <input type="text" name="tempName" value="@item.tempName" class="form-control" readonly />
+                    </td>
+                    <td>
+                        <input type="number" name="tempQuantity" value="@item.tempQuantity" class="form-control" min="1" step="1" readonly />
+                    </td>
+                    <td>
+                        <input type="number" name="tempPrice" value="@item.tempPrice" class="form-control" min="0" step="0.01" readonly />
+                    </td>
+                    <td>
+                        <input type="number" name="tempTotal" value="@item.tempTotal" class="form-control" readonly />
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+        <tbody>
+            <tr>
+                <td>New</td>
+                <td><input type="text" name="formData.tempName" class="form-control" /></td>
+                <td><input type="number" name="formData.tempQuantity" class="form-control" min="1" step="1" oninput="updateTotal()" id="newQuantity" /></td>
+                <td><input type="number" name="formData.tempPrice" class="form-control" min="0" step="0.01" oninput="updateTotal()" id="newPrice" /></td>
+                <td><input type="number" name="formData.tempTotal" id="newTotal" class="form-control" readonly /></td>
+                <td>
+                    <button type="submit" asp-page-handler="Add" class="btn btn-primary">Add</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="text-end"><strong>Total</strong></td>
+                <td class="text-end"><strong>Quantity = @Model.TotalQuantity</strong></td>
+                <td class="text-end"><strong>Price = @Model.GrandTotal.ToString("0.00")</strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mb-3 justify-content-center">
+        <div class="col-auto d-grid">
+            <button type="submit" asp-page-handler="SaveToDatabase" class="btn btn-danger mt-3">Save Order</button>
+        </div>
+
+        <div class="col-auto d-grid">
+            <a class="btn btn-primary mt-3" href="/Order/Index">Cancel</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    function updateTotal() {
+        let quantity = parseFloat(document.getElementById("newQuantity").value) || 0;
+        let price = parseFloat(document.getElementById("newPrice").value) || 0;
+        document.getElementById("newTotal").value = (quantity * price).toFixed(2);
+    }
+</script>
+
+<style>
+    body {
+        background-color: #cce5ff;
+    }
+
+    .table {
+        background-color: white;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table thead th {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tbody tr:hover {
+            background-color: #ddd;
+        }
+
+    .text-end {
+        text-align: right;
+        font-weight: bold;
+    }
+</style>

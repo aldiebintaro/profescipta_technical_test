@@ -1,0 +1,101 @@
+﻿@page
+@model Profescipta_test.Pages.Order.createModel
+@{
+}
+
+<br>
+<h2>New Order</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+@if (Model.successMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.successMessage</strong>
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="row mb-3">
+        <!-- Left Column: Name & Date of Birth -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Sales Order Number</label>
+                <input type="text" class="form-control" name="salesOrder" placeholder="Input here" value="@Model.orderInfo.ORDER_NO"/>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Order Date</label>
+                <input type="date" id="orderDate" name="orderDate" class="form-control" placeholder="Pick date" value="@Model.orderInfo.ORDER_DATE" />
+            </div>
+        </div>
+
+        <!-- Right Column: Customer & Address -->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="col-form-label">Customer</label>
+                <select class="form-control" name="Customer" placeholder="Input here">
+                    <option value="">-- Select Customer --</option>
+                    <option value="1">PROFES</option>
+                    <option value="2">TITAN</option>
+                    <option value="3">DIPS</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="col-form-label">Address</label>
+                <textarea class="form-control" name="Address" rows="4" placeholder="Input here" value="@Model.orderInfo.ADDRESS"></textarea>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Action</th>
+                <th>ITEM NAME</th>
+                <th>QTY</th>
+                <th>PRICE</th>
+                <th>TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+            <tr>
+                <td>1</td>
+                <td>
+                    <button type="button" class="btn btn-success btn-sm" onclick="addItem()">Save</button>
+                </td>
+                <td>
+                    <input type="text" id="itemName" class="form-control" placeholder="Enter item name">
+                </td>
+                <td>
+                    <input type="number" id="itemQty" class="form-control" placeholder="Enter quantity" min="1">
+                </td>
+                <td>
+                    <input type="number" id="itemPrice" class="form-control" placeholder="Enter price" min="0">
+                </td>
+                <td>
+                    <span id="itemTotal">0</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/Order/Index">Cancel</a>
+        </div>
+    </div>
+
+</form>
